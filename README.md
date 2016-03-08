@@ -16,4 +16,5 @@ $config = array(
 	)
 );
 $auth = new AuthTB($config);
+$userData = $auth->getUser();
 ```

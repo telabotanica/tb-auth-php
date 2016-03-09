@@ -144,7 +144,7 @@ class AuthTB {
 
 		// equivalent of "-k", ignores SSL self-signed certificate issues
 		// (for local testing only)
-		if (! empty($this->config) && $this->config['ignoreSSLIssues'] === true) {
+		if (! empty($this->config['ignoreSSLIssues']) && $this->config['ignoreSSLIssues'] === true) {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		}

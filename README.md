@@ -18,3 +18,12 @@ $config = array(
 $auth = new AuthTB($config);
 $userData = $auth->getUser();
 ```
+
+## config parameters
+### mandatory
+- __annuaireURL__ : URL of Tela Botanica SSO service
+
+### optional
+- __ignoreSSLIssues__ : if true, curl will be lazy on SSL host verification, and prevent errors with ols versions of libssl
+- __headerName__ : expected header to read the token from (defaults to "Authorization")
+- __admins__ : a list of email addresses of people who will be considered as "admins", ie isAdmin() will return true

@@ -87,7 +87,8 @@ class AuthTB {
 		}
 
 		$isAdmin = in_array($this->user['sub'], $admins);
-		$hasAdminRole = ! empty(array_intersect($this->user['permissions'], $adminRoles));
+		$commonRoles = array_intersect($this->user['permissions'], $adminRoles);
+		$hasAdminRole = ! empty($commonRoles);
 
 		return ($isAdmin || $hasAdminRole);
 	}
@@ -111,10 +112,6 @@ class AuthTB {
 				$tokenData = $this->decodeToken($token);
 				if ($tokenData != null && $tokenData["sub"] != "") {
 					$user = $tokenData;
-					// @TODO ask user details to the "annuaire"
-					// $utilisateur = $this->recupererUtilisateurEnBdd($courriel);
-					// @TODO ask BuddyPress the user groups
-					// $groups = ...
 				}
 			}
 		}

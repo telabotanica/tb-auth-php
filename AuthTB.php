@@ -70,11 +70,26 @@ class AuthTB {
 	}
 
 	/**
-	 * Returns trus if the user's email address is in the admins list (in config)
+	 * Returns true if :
+	 *  - the user's email address is in the "admins" list (in config)
+	 *  OR
+	 *  - the user has one of the roles listed in the "adminRoles" list (in config)
 	 */
 	public function isAdmin() {
 		$admins = $this->config['admins'];
-		return in_array($this->user['sub'], $admins);
+		$adminRoles = $this->config['adminRoles'];
+		// avoid warnings
+		if (! is_array($admins)) {
+			$admins = array();
+		}
+		if (! is_array($adminRoles)) {
+			$adminRoles = array();
+		}
+
+		$isAdmin = in_array($this->user['sub'], $admins);
+		$hasAdminRole = ! empty(array_intersect($this->user['permissions'], $adminRoles));
+
+		return ($isAdmin || $hasAdminRole);
 	}
 
 	/**

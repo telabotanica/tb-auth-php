@@ -122,10 +122,12 @@ class AuthTB {
 	 * Defines as current user an unknown pseudo-user
 	 */
 	protected function getUnknownUser() {
-		$this->user = array(
+		$user = array(
 			'sub' => null,
-			'id' => null // @TODO replace with a session ID ?
+			'id' => null, // @TODO replace with a session ID ?
+			'permissions' => array()
 		);
+		return $user;
 	}
 
 	/**

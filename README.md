@@ -13,6 +13,9 @@ $config = array(
 	"admins" => array(
 		"john@example.org",
 		"mary@othersite.org"
+	),
+	"adminRoles" => array(
+		"tb_my-application_admin"
 	)
 );
 $auth = new AuthTB($config);
@@ -27,3 +30,4 @@ $userData = $auth->getUser();
 - __ignoreSSLIssues__ : if true, curl will be lazy on SSL host verification, and prevent errors with old versions of libssl
 - __headerName__ : expected header to read the token from (defaults to "Authorization")
 - __admins__ : a list of email addresses of people who will be considered as "admins", ie isAdmin() will return true
+- __adminRoles__ : a list of roles whose members will be considered as "admins", ie isAdmin() will return true

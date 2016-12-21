@@ -7,7 +7,7 @@ class AuthTB {
 	/**
 	 * Configuration format : an array containing the following indices
 	 * - annuaireURL : root URL of the "annuaire" SSO service
-	 * - admins : a list of user emails who xill be granted administrator rights
+	 * - admins : a list of user emails who will be granted administrator rights
 	 * - ignoreSSLIssues : if true, will ignore self-signed SSL certificates issues
 	 * - headerName : if set, the SSO token will be searched for in this header,
 	 *		rather than in "Authorization"

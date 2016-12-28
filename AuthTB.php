@@ -87,8 +87,11 @@ class AuthTB {
 		}
 
 		$isAdmin = in_array($this->user['sub'], $admins);
-		$commonRoles = array_intersect($this->user['permissions'], $adminRoles);
-		$hasAdminRole = ! empty($commonRoles);
+		$hasAdminRole = false;
+		if (isset($this->user['permissions']) && is_array($this->user['permissions'])) {
+			$commonRoles = array_intersect($this->user['permissions'], $adminRoles);
+			$hasAdminRole = ! empty($commonRoles);
+		}
 
 		return ($isAdmin || $hasAdminRole);
 	}

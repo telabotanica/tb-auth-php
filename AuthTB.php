@@ -76,14 +76,13 @@ class AuthTB {
 	 *  - the user has one of the roles listed in the "adminRoles" list (in config)
 	 */
 	public function isAdmin() {
-		$admins = $this->config['admins'];
-		$adminRoles = $this->config['adminRoles'];
-		// avoid warnings
-		if (! is_array($admins)) {
-			$admins = array();
+		$admins = array();
+		$adminRoles = array();
+		if (isset($this->config['admins']) && is_array($this->config['admins'])) {
+			$admins = $this->config['admins'];
 		}
-		if (! is_array($adminRoles)) {
-			$adminRoles = array();
+		if (isset($this->config['adminRoles']) && is_array($this->config['adminRoles'])) {
+			$adminRoles = $this->config['adminRoles'];
 		}
 
 		$isAdmin = in_array($this->user['sub'], $admins);
@@ -94,6 +93,17 @@ class AuthTB {
 		}
 
 		return ($isAdmin || $hasAdminRole);
+	}
+
+	/**
+	 * Returns true if the client's IP address is in the "authorizedIPs" list (in config)
+	 */
+	public function hasAuthorizedIP() {
+		$authorizedIPs = array();
+		if (isset($this->config['authorizedIPs']) && is_array($this->config['authorizedIPs'])) {
+			$authorizedIPs = $this->config['authorizedIPs'];
+		}
+		return in_array($_SERVER['REMOTE_ADDR'], $authorizedIPs);
 	}
 
 	/**

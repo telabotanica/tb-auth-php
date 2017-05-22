@@ -182,10 +182,22 @@ class AuthTB {
 	protected function decodeToken($token) {
 		$parts = explode('.', $token);
 		$payload = $parts[1];
-		$payload = base64_decode($payload);
+		$payload = $this->urlsafeB64Decode($payload);
 		$payload = json_decode($payload, true);
 
 		return $payload;
+	}
+
+	/**
+	 * Method compatible with "urlsafe" base64 encoding used by JWT lib
+	 */
+	protected function urlsafeB64Decode($input) {
+		$remainder = strlen($input) % 4;
+		if ($remainder) {
+			$padlen = 4 - $remainder;
+			$input .= str_repeat('=', $padlen);
+		}
+		return base64_decode(strtr($input, '-_', '+/'));
 	}
 }
 

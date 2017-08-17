@@ -20,6 +20,9 @@ class AuthTB {
 	/** Groups the user belongs to (currently unused) */
 	protected $groups = array();
 
+	/** Permissions (roles names) the user has */
+	protected $permissions = array();
+
 	/** Header to search for the token; by default "Authorization" */
 	protected $headerName;
 
@@ -32,6 +35,14 @@ class AuthTB {
 		}
 		// reading user infos from SSO token
 		$this->user = $this->getUserFromToken();
+		// copying permissions
+		if (isset($this->user['permissions']) && is_array($this->user['permissions'])) {
+			$this->permissions = $this->user['permissions'];
+		}
+		// copying groups
+		if (isset($this->user['groupes']) && is_array($this->user['groupes'])) {
+			$this->groups = $this->user['groupes'];
+		}
 	}
 
 	/**
@@ -70,6 +81,13 @@ class AuthTB {
 	}
 
 	/**
+	 * Returns the list of permissions (roles names) the user has
+	 */
+	public function getUserPermissions() {
+		return $this->permissions;
+	}
+
+	/**
 	 * Returns true if :
 	 *  - the user's email address is in the "admins" list (in config)
 	 *  OR
@@ -86,11 +104,10 @@ class AuthTB {
 		}
 
 		$isAdmin = in_array($this->user['sub'], $admins);
+
 		$hasAdminRole = false;
-		if (isset($this->user['permissions']) && is_array($this->user['permissions'])) {
-			$commonRoles = array_intersect($this->user['permissions'], $adminRoles);
-			$hasAdminRole = ! empty($commonRoles);
-		}
+		$commonRoles = array_intersect($this->permissions, $adminRoles);
+		$hasAdminRole = ! empty($commonRoles);
 
 		return ($isAdmin || $hasAdminRole);
 	}

@@ -26,12 +26,19 @@ class AuthTB {
 	/** Header to search for the token; by default "Authorization" */
 	protected $headerName;
 
+	/** Cookie to search for the token; by default "tb_auth" */
+	protected $cookieName;
+
 	public function __construct($config) {
 		$this->config = $config;
 		// defaults and overriding
 		$this->headerName = "Authorization";
 		if (! empty($this->config['headerName'])) {
 			$this->headerName = $this->config['headerName'];
+		}
+		$this->cookieName = "tb_auth";
+		if (! empty($this->config['cookieName'])) {
+			$this->cookieName = $this->config['cookieName'];
 		}
 		// reading user infos from SSO token
 		$this->user = $this->getUserFromToken();
@@ -132,7 +139,7 @@ class AuthTB {
 		// unknown user, by default
 		$user = $this->getUnknownUser();
 		// read token
-		$token = $this->readTokenFromHeader();
+		$token = $this->readToken();
 		//echo "Token : $token\n";
 		if ($token != null) {
 			// validate token
@@ -158,6 +165,14 @@ class AuthTB {
 			'permissions' => array()
 		);
 		return $user;
+	}
+
+	protected function readToken() {
+		$token = $this->readTokenFromHeader;
+		if (!$token) {
+			$token = $_COOKIE[$this->cookieName];
+		}
+		return $token;
 	}
 
 	/**
